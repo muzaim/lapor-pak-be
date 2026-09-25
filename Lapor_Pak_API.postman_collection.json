@@ -1,0 +1,1286 @@
+{
+  "info": {
+    "_postman_id": "lapor-pak-api-collection",
+    "name": "Lapor Pak API",
+    "description": "Postman Collection for Lapor Pak Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Budi Pengadu\",\n  \"email\": \"budi@example.com\",\n  \"password\": \"user123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "    console.log('Token user otomatis tersimpan ke variabel token!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"budi@example.com\",\n  \"password\": \"user123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "    console.log('Token admin otomatis tersimpan ke variabel token!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@laporpak.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile (Me)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"old_password\": \"user123\",\n  \"new_password\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/change-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "change-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/reset-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Master Data Modules",
+      "item": [
+        {
+          "name": "Get All Master Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/master/all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Kepala Desa",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/master/village-head",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "village-head"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Kepala Desa (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Bpk. H. Ahmad Sanusi",
+                  "type": "text"
+                },
+                {
+                  "key": "period",
+                  "value": "2020 - 2026",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Kepala Desa Lapor Pak yang berdedikasi membangun pelayanan desa transparan.",
+                  "type": "text"
+                },
+                {
+                  "key": "photo",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/master/village-head",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "village-head"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Visi Misi",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/master/vision-mission",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "vision-mission"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Visi Misi (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vision\": \"Terwujudnya Desa yang Maju, Sejahtera, Transparan, dan Berdaya Saing.\",\n  \"mission\": \"1. Meningkatkan pelayanan publik berbasis digital.\\n2. Pembangunan infrastruktur desa yang merata.\\n3. Mengembangkan potensi ekonomi dan UMKM warga desa.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/master/vision-mission",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "vision-mission"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Letak Geografis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/master/geographics",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "geographics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Letak Geografis (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"google_maps_url\": \"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.573117!3d-6.914744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x1460777f68d93cf4!2sBandung%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid\",\n  \"border_north\": \"Desa Sukalama\",\n  \"border_south\": \"Kecamatan Selatan\",\n  \"border_east\": \"Sungai Citarum\",\n  \"border_west\": \"Perbukitan Barat\",\n  \"area_size\": \"14.5 km²\",\n  \"average_altitude\": \"650 mdpl\",\n  \"total_dusun\": 6,\n  \"topography\": \"Dataran Tinggi & Perbukitan\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/master/geographics",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "geographics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Master App Settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/master/app-settings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "app-settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Master App Settings (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "app_name",
+                  "value": "Lapor Pak Desa",
+                  "type": "text"
+                },
+                {
+                  "key": "village_name",
+                  "value": "Desa Sukamaju",
+                  "type": "text"
+                },
+                {
+                  "key": "logo",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/master/app-settings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "app-settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Office & Contact Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/master/office-info",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "office-info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Office & Contact Info (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"office_address\": \"Jl. Raya Desa No. 01, Kecamatan Maju, Kabupaten Sejahtera 40123\",\n  \"operational_hours\": \"Senin - Jumat: 08.00 - 15.00 WIB\",\n  \"operational_description\": \"Sabtu, Minggu dan Hari Libur Nasional Tutup. Untuk pelayanan darurat dapat menghubungi kontak WhatsApp kantor desa.\",\n  \"phone\": \"0812-3456-7890\",\n  \"email\": \"kontak@desalaporpak.go.id\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/master/office-info",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "master",
+                "office-info"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Village Profile (Master Data)",
+      "item": [
+        {
+          "name": "Get Village Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/village",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "village"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Village Profile (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "village_name",
+                  "value": "Desa Sukamaju",
+                  "type": "text"
+                },
+                {
+                  "key": "head_of_village",
+                  "value": "Bpk. H. Ahmad Sanusi",
+                  "type": "text"
+                },
+                {
+                  "key": "vision",
+                  "value": "Terwujudnya Desa yang Maju, Sejahtera, Transparan, dan Berdaya Saing.",
+                  "type": "text"
+                },
+                {
+                  "key": "mission",
+                  "value": "1. Meningkatkan pelayanan publik berbasis digital.\n2. Pembangunan infrastruktur desa yang merata.",
+                  "type": "text"
+                },
+                {
+                  "key": "address",
+                  "value": "Jl. Raya Desa Sukamaju No. 01, Kecamatan Maju",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "0812-3456-7890",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "kontak@desasukamaju.go.id",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Profil singkat desa Sukamaju.",
+                  "type": "text"
+                },
+                {
+                  "key": "logo",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "banner",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/village",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "village"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reports (User)",
+      "item": [
+        {
+          "name": "Create Report (With Image Upload)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Jalan Rusak di Jalan Merdeka",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Terdapat lubang besar yang membahayakan pengendara",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "Infrastruktur",
+                  "type": "text"
+                },
+                {
+                  "key": "location",
+                  "value": "Jl. Merdeka No. 12",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reports"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Reports (With Filter & Pagination)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/reports?search=jalan&status=DIAJUKAN&category=Infrastruktur&start_date=2026-09-01&end_date=2026-09-30&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reports"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "jalan"
+                },
+                {
+                  "key": "status",
+                  "value": "DIAJUKAN"
+                },
+                {
+                  "key": "category",
+                  "value": "Infrastruktur"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2026-09-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2026-09-30"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Report By ID (With Histories)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/reports/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete My Report",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/reports/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - User Management (CRUD)",
+      "item": [
+        {
+          "name": "Get All Users (Admin - With Pagination)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/users?page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ahmad Staff\",\n  \"email\": \"ahmad@laporpak.com\",\n  \"password\": \"password123\",\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User By ID (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ahmad Staff Updated\",\n  \"email\": \"ahmad.updated@laporpak.com\",\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/users/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/users/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Report Management",
+      "item": [
+        {
+          "name": "Get All Reports (Admin - With Full Filters & Pagination)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/reports?search=budi&status=DIAJUKAN&category=Infrastruktur&start_date=2026-09-01&end_date=2026-09-30&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "reports"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "budi"
+                },
+                {
+                  "key": "status",
+                  "value": "DIAJUKAN"
+                },
+                {
+                  "key": "category",
+                  "value": "Infrastruktur"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2026-09-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2026-09-30"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Export Reports to Excel (Admin - With Filters)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/reports/export?search=&status=&category=&start_date=&end_date=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "reports",
+                "export"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "status",
+                  "value": ""
+                },
+                {
+                  "key": "category",
+                  "value": ""
+                },
+                {
+                  "key": "start_date",
+                  "value": ""
+                },
+                {
+                  "key": "end_date",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Report Detail (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/reports/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "reports",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Report Status & Add Comment + Optional Image (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "DIPROSES",
+                  "type": "text"
+                },
+                {
+                  "key": "comment",
+                  "value": "Petugas sudah menuju lokasi untuk melakukan survei awal.",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/reports/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "reports",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Report (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/admin/reports/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "reports",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

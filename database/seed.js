@@ -30,7 +30,7 @@ async function seed() {
         'Lampu jalan di depan RT 02 mati sejak dua hari yang lalu.',
         'INFRASTRUCTURE',
         'Jl. Mawar No. 12',
-        'PENDING'
+        'DIAJUKAN'
       ]
     );
 
